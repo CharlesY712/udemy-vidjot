@@ -1,6 +1,17 @@
 const express = require('express');
-const app = express();
 const exphbs = require('express-handlebars');
+const mongoose = require('mongoose');
+
+const app = express();
+
+// Map global promise
+mongoose.Promise = global.Promise;
+// Connect to mongoose
+mongoose.connect('mongodb://localhost/vidjot-dev', {
+  useNewUrlParser: true
+})
+  .then(() => console.log('MongoDB Connected...'))
+  .catch(err => console.log(err));
 
 // Handlebars Middleware
 app.engine('handlebars', exphbs({
@@ -11,9 +22,9 @@ app.set('view engine', 'handlebars');
 // Index Route
 app.get('/', (req, res) => {
   const title = 'Welcome';
-  
+
   res.render('index', {
-    title: title
+    title
   });
 });
 
